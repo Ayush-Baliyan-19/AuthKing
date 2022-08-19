@@ -77,4 +77,8 @@ router.post('/login', async (req,res)=>{
         res.status(400).send(error)
     }
 })
+
+router.get('/',(req,res)=>{
+    res.send("This is a backend hosted on heroku")
+})
 module.exports = router;
