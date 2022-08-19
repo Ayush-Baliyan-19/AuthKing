@@ -2,19 +2,23 @@ const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
 const app = express();
+const dotenv= require("dotenv")
+
+dotenv.config()
+
 
 
 router.post("/mail", async (req, res) => {
   const { email,message } = req.body;
-  async function main() {
-
-    let transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      auth: {
-        user: "92faa97f57704e", // generated ethereal user
-        pass: "9c9488af185151", // generated ethereal password
-      },
-    });
+  try {
+   
+  const transport = nodemailer.createTransport({
+    host:"smtp.gmail.com",
+    auth:{
+      user:process.env.NODEMAILER_USER,
+      pass:process.env.NODEMAILER_PASS
+    }
+  })
 
     const options={
         from: "ayushbaliyan05@gmail.com", // sender address
@@ -23,7 +27,12 @@ router.post("/mail", async (req, res) => {
         text: `${message}`, // plain text body
     }
     // send mail with defined transport object
-     await  transporter.sendMail(options);
+    const mailSent= await transport.sendMail(options);
+    console.log(mailSent.accepted)
+    res.status(200).send("Mail Sent Successfully")
+  } catch (error) {
+    res.status(400).send(error)
+  }
 
 /*     console.log("Message sent: %s", info.messageId);
     // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
@@ -32,6 +41,5 @@ router.post("/mail", async (req, res) => {
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
     // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou... */
   }
-
-});
+);
 module.exports=router;
