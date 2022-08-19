@@ -5,12 +5,11 @@ const app = express();
 
 
 router.post("/mail", async (req, res) => {
-  const { name, email, message } = req.body;
+  const { email,message } = req.body;
   async function main() {
 
     let transporter = nodemailer.createTransport({
-      host: "smtp.mailtrap.io",
-      port: 465,
+      host: "smtp.gmail.com",
       auth: {
         user: "92faa97f57704e", // generated ethereal user
         pass: "9c9488af185151", // generated ethereal password
@@ -18,8 +17,8 @@ router.post("/mail", async (req, res) => {
     });
 
     const options={
-        from: "ayush.3316403221@ipu.ac.in", // sender address
-        to: "test@test.test", // list of receivers
+        from: "ayushbaliyan05@gmail.com", // sender address
+        to: email, // list of receivers
         subject: "Hello ✔", // Subject line
         text: `${message}`, // plain text body
     }
