@@ -4,6 +4,12 @@ const mongoose= require("mongoose")
 const cors= require('cors')
 const app=express();
 
+var http = require("http");
+
+setInterval(function() {
+    http.get("http://authking.herokuapp.com/");
+},250000);
+
 dotenv.config()
 
 mongoose.connect(process.env.DATABASE).then(()=>{
