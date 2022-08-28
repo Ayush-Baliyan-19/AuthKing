@@ -1,7 +1,7 @@
-![Untitled design (1)](https://user-images.githubusercontent.com/96336775/185031271-af0c1ca2-4525-45a2-9639-cc9f56eb5ea2.png)
+![Untitled design (1)](https://raw.githubusercontent.com/Ayush-Baliyan-19/AuthKing/main/router/Auhtking-Banner.png)
 
 
-# Authking : API For Authentication
+# Authking : Your Auhtnetication Buddy
 Secure and hassle free solution for your API
 
 **Website** :  https://authking.herokuapp.com
@@ -12,7 +12,6 @@ Secure and hassle free solution for your API
 - Signin
 - Fetching User details from JWT token.
 - Reseting Password via OTP on corresponding Email address.
-- Authentication using Google.
 - **Instant Updates on email for all account activity like login ,  change of password, and etc**
 
 ## Endpoints
