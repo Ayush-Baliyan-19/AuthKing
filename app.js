@@ -27,5 +27,5 @@ app.use(require('./router/mail'))
 // app.use("/auth",auth)
 
 app.listen(PORT, ()=>{
-    console.log(`Server is running at port ${PORT}`)
+    // console.log(`Server is running at port ${PORT}`)
 })
