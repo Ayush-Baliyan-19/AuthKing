@@ -12,7 +12,7 @@ const invalidmailer = require("./mail")
 const fetchUser = require("../middleware/fetchUserFromToken")
 
 router.get("/", (req, res) => {
-    res.send("Hello World From The router");
+    res.send("Hello This is Ayush Baliyan");
 });
 router.post("/register", [
     body("email", "Enter a valid email address").isEmail(),
