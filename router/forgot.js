@@ -35,7 +35,7 @@ router.post('/forgotpass', [
         // console.log(userExist);
 
         if ( await bcrypt.compare(req.body.newpass, userExist.pass)) {
-            res.status(200).json({ success: false, message: "Enter a new password, this is an old one" });
+            return res.status(200).json({ success: false, message: "Enter a new password, this is an old one" });
         }
 
         var myuser = { email: req.body.email };
