@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'AuthKing'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_F1E5618317494BC0B8BCC99959F6E8C3 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3D0CB70DB1154745B2CA67BFF9B4E028 }}
           package: .
