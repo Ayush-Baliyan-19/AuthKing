@@ -22,7 +22,7 @@ router.post("/signin", async (req,res)=>{
             res.cookie("jwtoken",token,{
                 expires:new Date(Date.now()+2589200000),
                 httpOnly:true   
-            });
+            })
             if(isMatch)
             {
                 console.log("Password Matched")

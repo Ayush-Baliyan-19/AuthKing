@@ -13,22 +13,10 @@ const userSchema= new mongoose.Schema(
             type:String,
             required:true
         },
-        work:{
-            type:String,
-            required:true
-        },
-        phone:{
-            type:Number,
-            required:true
-        },
         pass:{
             type:String,
             required:true
         },
-        cpass:{
-            type:String,
-            required:true
-        }
     }
 )
 

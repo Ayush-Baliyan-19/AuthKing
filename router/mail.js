@@ -6,8 +6,6 @@ const dotenv= require("dotenv")
 
 dotenv.config()
 
-
-
 router.post("/mail", async (req, res) => {
   const { email,message } = req.body;
   try {
