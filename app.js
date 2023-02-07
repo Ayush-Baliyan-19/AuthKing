@@ -7,10 +7,6 @@ const connectToDb = require("./db.js")
 // const auth=require("./router/auth")
 var http = require("http");
 
-setInterval(function() {
-    http.get("http://authking.herokuapp.com/");
-},250000);
-
 dotenv.config()
 
 connectToDb();
