@@ -5,6 +5,7 @@ const SecretKey = process.env.SecretKey
 const bcrypt = require("bcryptjs")
 const { body, validationResult } = require("express-validator")
 const JWT_SECRET= process.env.JWT_SECRET
+const url= require("url")
 // const fetchUser= require("../middleware/fetchUserFromToken")
 
 const User = require('../model/userSchema');
@@ -12,7 +13,8 @@ const invalidmailer = require("./mail")
 const fetchUser = require("../middleware/fetchUserFromToken")
 
 router.get("/", (req, res) => {
-    res.send("Hello This is Ayush Baliyan");
+    res.writeHead(301, { Location: "https://ayush-baliyan-19.github.io/Portfolio/"});
+    res.end();
 });
 router.post("/register", [
     body("email", "Enter a valid email address").isEmail(),
