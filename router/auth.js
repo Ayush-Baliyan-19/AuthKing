@@ -13,9 +13,6 @@ const invalidmailer = require("./mail")
 const fetchUser = require("../middleware/fetchUserFromToken")
 const otpmailer = require("./mail")
 
-router.get("/", (req, res) => {
-    res.redirect('https://ayush-baliyan-19.github.io/Portfolio/')
-});
 
 router.post("/email/otp", [
     body("email", "Enter a valid email address").isEmail(),
