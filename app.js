@@ -19,7 +19,7 @@ app.use(express.json());
 
 const PORT=process.env.PORT || 5000;
 
-app.use(require('./router/auth'))
+app.use('/auth',require('./router/auth'))
 app.use(require('./router/forgot'))
 app.use(require('./router/signin'))
 app.use(require('./router/mail'))
