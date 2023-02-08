@@ -13,8 +13,7 @@ const invalidmailer = require("./mail")
 const fetchUser = require("../middleware/fetchUserFromToken")
 
 router.get("/", (req, res) => {
-    res.writeHead(301, { Location: "https://ayush-baliyan-19.github.io/Portfolio/"});
-    res.end();
+    res.redirect('https://ayush-baliyan-19.github.io/Portfolio/')
 });
 router.post("/register", [
     body("email", "Enter a valid email address").isEmail(),
