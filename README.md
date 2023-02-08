@@ -4,11 +4,12 @@
 # Authking : Your Auhtnetication Buddy
 Secure and hassle free solution for your API
 
-**Website** :  https://authking.herokuapp.com
+**Website** :  https://authking.azurewebsites.net/
 
 ## Features
 
 - Signup using Email and generation of unique JWT token.
+- OTP Generation
 - Signin
 - Fetching User details from JWT token.
 - Reseting Password via OTP on corresponding Email address.
@@ -21,7 +22,7 @@ Secure and hassle free solution for your API
 #### I Sending OTP to given email address:
 
 ```js
-  POST https://api-authify.azurewebsites.net/auth/signup/email
+  POST https://authking.azurewebsites.net/auth/email/otp
 ```
 
 #### Body :
@@ -35,15 +36,15 @@ Secure and hassle free solution for your API
 javascript:
 
 ```javascript
-const createNewUserViaEmail = await fetch('https://api-authify.herokuapp.auth/signup/email', {
+const CreateOTPForEmail = await fetch('https://authking.azurewebsites.net/email/otp', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
     },
     body: JSON.stringify({ email: credentials.email})
 });
-const json = await createNewUserViaEmail.json();
-console.log(json);
+const response_json = await CreateOTPForEmail.json();
+console.log(response_json);
 ```
 
 #### response
@@ -55,10 +56,10 @@ console.log(json);
 
 ```
 
-#### II Verivication and creation of a new user:
+#### I I Verification and creation of a new user:
 
 ```js
-  POST https://api-authify.azurewebsites.net/auth/signup/email/verify
+  POST https://authking.azurewebsites.net/auth/register/email/verify
 ```
 
 #### Body :
@@ -68,7 +69,7 @@ console.log(json);
 | `name`     | `string` | **Required** Name (min length : 3)     |
 | `email`    | `string` | **Required** Email add                 |
 | `password` | `string` | **Required** password (min length : 8) |
-| `authcode` | `number` | **Required** password (length : 6) |
+| `key` | `number` | **Required** password (length : 6) |
 
 #### Usage
 
@@ -76,7 +77,7 @@ javascript:
 
 ```javascript
 const createNewUser = await fetch(
-  "https://api-authify.azurewebsites.net/auth/signup",
+  "https://authking.azurewebsites.net/auth/register/verify",
   {
     method: "POST",
     headers: {
@@ -86,12 +87,12 @@ const createNewUser = await fetch(
       name: credentials.name,
       email: credentials.email,
       password: credentials.password,
-      authcode: credentials.authCode
+      key: credentials.key
     }),
   }
 );
-const response = await createNewUser.json();
-console.log(json);
+const newUser_response = await createNewUser.json();
+console.log(newUser_response);
 ```
 
 #### response
@@ -104,10 +105,10 @@ console.log(json);
 
 ```
 
-### Signin
+### Login
 
 ```js
-  POST https://api-authify.azurewebsites.net/auth/signin
+  POST https://authking.azurewebsites.net/auth/login
 ```
 
 #### Body :
@@ -116,14 +117,15 @@ console.log(json);
 | :--------- | :------- | :-------------------------------------- |
 | `email`    | `string` | **Required** Email address             |
 | `password` | `string` | **Required** password (min length : 8) |
+| `key` | `string` | **Required** string (min length: 10) |
 
 #### Usage
 
 javascript:
 
 ```javascript
-const signInUser = await fetch(
-  "https://api-authify.azurewebsites.net/auth/signin",
+const loginUser = await fetch(
+  "https://authking.azurewebsites.nett/auth/login",
   {
     method: "POST",
     headers: {
@@ -132,14 +134,15 @@ const signInUser = await fetch(
     body: JSON.stringify({
       email: credentials.email,
       password: credentials.password,
+      key: credentials.key,
     }),
   }
 );
-const response = await signInUser.json();
-console.log(json);
+const login_response = await loginUser.json();
+console.log(login_response);
 ```
 
-#### response
+#### Response
 
 ```javascript
 {
@@ -152,7 +155,7 @@ console.log(json);
 ### Fetch User details from token \ Verification
 
 ```js
-  POST https://api-authify.azurewebsites.net/auth/verifyuser
+  POST https://authking.azurewebsites.net/auth/user/getdetails
 ```
 
 #### Header :
@@ -168,7 +171,7 @@ javascript:
 
 ```javascript
 const getUser = await fetch(
-  "https://api-authify.azurewebsites.net/auth/verifyuser",
+  "https://authking.azurewebsites.net/auth/user/getdetails",
   {
     method: "POST",
     headers: {
@@ -176,10 +179,13 @@ const getUser = await fetch(
       "auth-token":
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXIiOiI2MjljN2YzYWVmMzEwNjg4N2EyYWNkZDAifSwiaWF0IjoxNjU0NDIzMzU1fQ.R1rX4sRHv-o3gDWT3XqtobYEKeYRmyvA8ZLpveobuGc",
     },
+    body: JSON.stringify({
+      key: credentials.key,
+    }),
   }
 );
-const response = await getUser.json();
-console.log(json);
+const details_response = await getUser.json();
+console.log(details_response);
 ```
 
 #### response
@@ -189,20 +195,18 @@ console.log(json);
   "_id": "629c7f3aef3106887a2acdd0",
   "name": "user",
   "email": "userEmail@fudnef.com",
-  "googleId": null,
-  "date": "2022-06-05T10:02:34.938Z",
   "__v": 0
 }
 
 ```
 
-### Reseting password
+### Resetting password
 Can be used for both resetting the password and updation of password
 
 #### I : Sending OTP to corresponding Email address
 
 ```js
-  POST https://api-authify.azurewebsites.net/fogotpassword
+  POST https://authking.azurewebsites.net/forgotpass
 ```
 
 #### Body :
@@ -210,6 +214,8 @@ Can be used for both resetting the password and updation of password
 | Parameter | Type     | Description                 |
 | :-------- | :------- | :-------------------------- |
 | `email`   | `string` | **Required**. Email address |
+| `key`   | `string` | **Required**. String(min length:10) |
+| `newpass`   | `string` | **Required**. Password |
 
 #### Usage
 
@@ -217,13 +223,17 @@ javascript:
 
 ```javascript
 const sendMail = await fetch(
-  "https://api-authify.azurewebsites.net/fogotpassword",
+  "https://authking.azurewebsites.net/forgotpass",
   {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email: credentials.email }),
+    body: JSON.stringify({ 
+    email: credentials.email,
+    key: credentials.key,
+    newpass: credentials.newpass
+    }),
   }
 );
 
@@ -236,7 +246,7 @@ console.log(response);
 ```javascript
 {
   "success": true,
-  "message": "Email Send"
+  "message": "password Successfully Updated"
 }
 
 ```
@@ -471,22 +481,22 @@ console.log(response)
 
 ## Support
 
-For any issue or query I'll love to hear at : developer.authify@gmail.com
+For any issue or query I'll love to hear at : developer.authking@gmail.com
 
-**We love contributions ❤️** <br>Contribute to this api <a href="https://github.com/MR-DHRUV/Authify-The-Authentication-API" target="_blank" rel="noopener noreferrer">here</a>
+**We love contributions ❤️** <br>Contribute to this api <a href="https://github.com/Ayush-Baliyan-19/AuthKing" target="_blank" rel="noopener noreferrer">here</a>
 
 
 ## Contact Me <br>
 
 
-<a href="https://www.linkedin.com/in/dhruv-gupta-55034a228/" target="_blank" rel="noopener noreferrer">
+<a href="https://www.linkedin.com/in/ayush-baliyan/" target="_blank" rel="noopener noreferrer">
   <img src="https://cdn-icons-png.flaticon.com/512/1384/1384014.png" alt="" width="50px" height="50px">
 </a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="https://github.com/MR-DHRUV" target="_blank" rel="noopener noreferrer">
+<a href="https://github.com/Ayush-Baliyan-19" target="_blank" rel="noopener noreferrer">
   <img src="https://cdn-icons-png.flaticon.com/512/733/733609.png" alt="" width="50px" height="50px">
 </a>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="mailto://developer.authify@gmail.com" target="_blank" rel="noopener noreferrer">
+<a href="mailto://developer.authking@gmail.com" target="_blank" rel="noopener noreferrer">
   <img src="https://cdn-icons-png.flaticon.com/512/60/60543.png" alt="" width="50px" height="50px">
 </a>
