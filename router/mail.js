@@ -1,7 +1,6 @@
 const express = require("express");
 const router = express.Router();
 const nodemailer = require("nodemailer");
-const app = express();
 const dotenv = require("dotenv")
 
 dotenv.config()
@@ -19,12 +18,11 @@ router.post("/mail", async (req, res) => {
     })
 
     const options = {
-      from: "ayushbaliyan05@gmail.com", // sender address
-      to: email, // list of receivers
-      subject: "Hello ✔", // Subject line
-      text: `${message}`, // plain text body
+      from: "ayushbaliyan05@gmail.com",
+      to: email, 
+      subject: "Hello ✔", 
+      text: `${message}`,
     }
-    // send mail with defined transport object
     const mailSent = await transport.sendMail(options);
     console.log(mailSent.accepted)
     res.status(200).send("Mail Sent Successfully")
@@ -45,9 +43,9 @@ const invalidmailer = async (user) => {
   })
 
   const options = {
-    from: "ayushbaliyan05@gmail.com", // sender address
-    to: user.email, // list of receivers
-    subject: "🔴🔴[ALERT] Invalid login attempt !!🔴🔴", // Subject line
+    from: "ayushbaliyan05@gmail.com",
+    to: user.email,
+    subject: "🔴🔴[ALERT] Invalid login attempt !!🔴🔴",
     html: `<div align=center>  
         <div style="margin:10vw; margin-top:10vh; margin-bottom:10vh; border:1px solid black; border-radius:10px; padding:20px">
         <div style="width: 90%; height: 17vh; background: url('https://raw.githubusercontent.com/Ayush-Baliyan-19/AuthKing/main/router/Auhtking-Banner.png') no-repeat center; background-size: contain;"></div>
@@ -68,12 +66,8 @@ const invalidmailer = async (user) => {
           Thank you for your attention to this matter. <br><br>
           
           Authking</h3>
-      </div>`, // plain text body
+      </div>`,
   }
-  // send mail with defined transport object
-  const mailSent = await transport.sendMail(options);
-  // console.log(mailSent.accepted)
-  // res.status(200).send("Mail Sent Successfully")
 }
 const otpmailer = async (otp, email) => {
   const transport = nodemailer.createTransport({
@@ -85,9 +79,9 @@ const otpmailer = async (otp, email) => {
   })
 
   const options = {
-    from: "ayushbaliyan05@gmail.com", // sender address
-    to: email, // list of receivers
-    subject: "OTP for Authking Registration", // Subject line
+    from: "ayushbaliyan05@gmail.com",
+    to: email,
+    subject: "OTP for Authking Registration", 
     html: `<p>Dear User,</p>
             <br><br>
             <p>We hope this email finds you well. We are writing to inform you that we have received a request to register with Authking using your email address.</p>
@@ -99,18 +93,14 @@ const otpmailer = async (otp, email) => {
             <p>If you need any assistance, our support team is always here to help. Please don't hesitate to reach out to us.</p>
             <br><br>
             <p>Best regards,</p>
-            <p>The Authking Team</p>`, // plain text body
+            <p>The Authking Team</p>`,
   }
-  // send mail with defined transport object
   const mailSent = await transport.sendMail(options);
   if(mailSent.accepted)
   {
     return true
   }
   return false
-  // return mailSent;
-  // console.log(mailSent)
-  // res.status(200).send("Mail Sent Successfully")
 }
 module.exports = router;
 module.exports = invalidmailer;

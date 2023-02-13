@@ -1,5 +1,4 @@
 const express = require("express")
-const jwt = require("jsonwebtoken")
 const router = express.Router()
 const SecretKey = process.env.SecretKey
 const bcrypt = require("bcryptjs")
@@ -32,8 +31,6 @@ router.post('/forgotpass', [
 
         const hashedpassnew = await bcrypt.hash(req.body.newpass, 10);
 
-        // console.log(userExist);
-
         if ( await bcrypt.compare(req.body.newpass, userExist.pass)) {
             return res.status(200).json({ success: false, message: "Enter a new password, this is an old one" });
         }
@@ -50,7 +47,6 @@ router.post('/forgotpass', [
 
         res.status(200).json({ success, message: "Password updated successfully" });
     } catch (err) {
-        console.log(err);
         const success = false;
         res.status(400).json({ success, err })
     }

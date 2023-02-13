@@ -5,8 +5,6 @@ const SecretKey = process.env.SecretKey
 const bcrypt = require("bcryptjs")
 const { body, validationResult } = require("express-validator")
 const JWT_SECRET = process.env.JWT_SECRET
-const url = require("url")
-// const fetchUser= require("../middleware/fetchUserFromToken")
 
 const User = require('../model/userSchema');
 const invalidmailer = require("./mail")
@@ -18,7 +16,7 @@ router.post("/email/otp", [
     body("email", "Enter a valid email address").isEmail(),
     body("key", "Enter a valid key").isLength({ min: 10 }),
 ], async (req, res) => {
-    const { email, name, pass} = req.body;
+    const { email } = req.body;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -61,7 +59,6 @@ router.post("/email/otp", [
 
     } catch (err) {
         res.status(400).json({ status: false, error: err })
-        console.log(err);
     }
 });
 
@@ -69,8 +66,6 @@ router.post("/register/email/verify", [
     body("email", "Enter a valid email address").isEmail(),
     body("name", "Enter a valid name of minimum 3 digits").isLength({ min: 3 }),
     body("pass", "Enter valid password").isLength({ min: 8 }),
-    // body("cpass", "Enter valid password").isLength({ min: 8 }),
-    // body('otp','Enter a valid otp').isLength({ min: 6 })
     body("key", "Enter a valid key").isLength({ min: 10 }),
 ], async (req, res) => {
     const { name, email, pass } = req.body;
@@ -105,7 +100,6 @@ router.post("/register/email/verify", [
         }
     } catch (err) {
         res.status(400).json({ status: false, error: err })
-        console.log(err);
     }
 });
 
@@ -144,7 +138,6 @@ router.post('/login', [
         const success = true;
         res.status(200).json({ success, token })
     } catch (error) {
-        console.log(error)
         res.status(400).send(error)
     }
 })
@@ -163,12 +156,12 @@ router.post('/user/getDetails', fetchUser, [
         }
 
         const userId = req.userId;
-        console.log(userId);
         const userfound = await User.findById(userId);
         if (!userfound) {
             return res.status(401).send({ error: "(code)Please authenticate using a valid token" });
         } else {
-            res.send(userfound);
+            const userObj={email:userfound.email,name:userfound.name,_id:userfound._id}
+            res.status(200).json(userObj);
         }
 
     } catch (err) {

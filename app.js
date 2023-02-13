@@ -1,11 +1,7 @@
 const dotenv= require("dotenv")
-const express= require ("express")
-const mongoose= require("mongoose")
+const app=require ("express")();
 const cors= require('cors')
-const app=express();
 const connectToDb = require("./db.js")
-// const auth=require("./router/auth")
-var http = require("http");
 
 dotenv.config()
 
@@ -24,10 +20,6 @@ app.get("/", (req, res) => {
 });
 app.use('/auth',require('./router/auth'))
 app.use(require('./router/forgot'))
-app.use(require('./router/signin'))
 app.use(require('./router/mail'))
 
-// app.use("/auth",auth)
-app.listen(PORT, ()=>{
-    // console.log(`Server is running at port ${PORT}`)
-})
+app.listen(PORT, ()=>{})
