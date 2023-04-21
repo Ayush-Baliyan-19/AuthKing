@@ -2,7 +2,7 @@ const mongoose =require("mongoose")
 const bcryptjs=require("bcryptjs")
 const jwt=require("jsonwebtoken");
 
-
+const time= new Date()
 const userSchema= new mongoose.Schema(
     {
         name:{
@@ -18,6 +18,40 @@ const userSchema= new mongoose.Schema(
             required:true,
             deefault:null
         },
+        tasksArray:[
+            {
+                Date:{
+                    type:String,
+                    default:time.getDate() + "/" + (time.getMonth()+1) + "/" + time.getFullYear()
+                },
+                Tasks:[
+                    {
+                        Heading:{
+                            type:String
+                        },
+                        Objective:{
+                            type:String
+                        },
+                        TaskId:{
+                            type:String
+                        },
+                        time:{
+                            type:String
+                        },
+                        tags:[
+                            {
+                                tagName:{
+                                    type:String
+                                },
+                                color:{
+                                    type:String
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
     }
 )
 

@@ -2,26 +2,18 @@ require('dotenv').config()
 const jwt = require('jsonwebtoken');
 
 
-//Get the user from the jwt token add add id to the req object 
 const fetchUser = async (req, res, next) => {
 
-
-    // bringing token from user
     const token = req.header('authToken');
     if (!token) {
         return res.status(401).send({ error: "(Middleware) Please authenticate using a valid token" })
     }
 
     try {
-        const data = jwt.verify(token, process.env.JWT_SECRET) //will decode the token
+        const data = jwt.verify(token, process.env.JWT_SECRET)
         // console.log(data);
-        // console.log(data.user.id);
-        req.userId = data._id;
+        req.userId = data._id||data.id;
         next()
-        // data.user returns a object named user having a object user which has id
-        // {
-        //  user : { user: id },
-        //  iat:   }
     }
 
     catch (error) {

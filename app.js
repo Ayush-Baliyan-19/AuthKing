@@ -22,5 +22,6 @@ app.get("/", (req, res) => {
 app.use('/auth',require('./router/auth'))
 app.use(require('./router/forgot'))
 app.use(require('./router/mail'))
+app.use('/user',require('./router/TasksManagement/Tasks'))
 
 app.listen(PORT, ()=>{})

@@ -5,9 +5,8 @@ const SecretKey = process.env.SecretKey
 const bcrypt = require("bcryptjs")
 const { body, validationResult } = require("express-validator")
 const JWT_SECRET = process.env.JWT_SECRET
-
+const nodemailer= require("nodemailer")
 const User = require('../model/userSchema');
-const invalidmailer = require("./mail")
 const fetchUser = require("../middleware/fetchUserFromToken")
 const otpmailer = require("./mail")
 
@@ -69,7 +68,6 @@ router.post("/register/email/verify", [
     body("key", "Enter a valid key").isLength({ min: 10 }),
 ], async (req, res) => {
     const { name, email, pass } = req.body;
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         const success = false;
@@ -84,7 +82,7 @@ router.post("/register/email/verify", [
         let userExist = await User.findOne({ email: email });
 
         if (userExist) {
-            return res.status(422).send("User already exist")
+            return res.status(422).json({success:false,message:"User already exist"})
         }
 
         const hashedPass = await bcrypt.hash(pass, 10)
@@ -103,6 +101,44 @@ router.post("/register/email/verify", [
     }
 });
 
+const invalidmailer = async (user) => {
+    const transport = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      auth: {
+        user: process.env.NODEMAILER_USER,
+        pass: process.env.NODEMAILER_PASS
+      },
+    })
+  
+    const options = {
+      from: "ayushbaliyan05@gmail.com",
+      to: user.email,
+      subject: "🔴🔴[ALERT] Invalid login attempt !!🔴🔴",
+      html: `<div align=center>  
+          <div style="margin:10vw; margin-top:10vh; margin-bottom:10vh; border:1px solid black; border-radius:10px; padding:20px">
+          <div style="width: 90%; height: 17vh; background: url('https://raw.githubusercontent.com/Ayush-Baliyan-19/AuthKing/main/router/Auhtking-Banner.png') no-repeat center; background-size: contain;"></div>
+          <H1>ALERT!!</H1>
+          <H2>Suspicious activity recorded on your account</H2>
+          <h3 style="text-align:left">Dear ${user.name}, <br><br>
+            This email is to inform you that we have detected a suspicious login attempt on your account from a different computer. For your security, we have temporarily suspended access to your account. <br><br>
+            
+            If you made this attempt, please ignore this email and your access will be restored in 24 hours. If you did not make this attempt, please take immediate action to secure your account. <br><br>
+            
+            To regain access to your account, please follow these steps: <br><br>
+            
+            Change your password to a strong and unique one
+            Enable two-factor authentication to add an extra layer of security to your account
+            Check your account activity logs to see if any unauthorized actions were performed
+            If you need assistance, please do not hesitate to contact our support team. <br><br>
+            
+            Thank you for your attention to this matter. <br><br>
+            
+            Authking</h3>
+        </div>`,
+    }
+    const mailSent= await transport.sendMail(options)
+  }
+
 router.post('/login', [
     body("email", "Enter a valid email address").isEmail(),
     body("key", "Enter a valid key").isLength({ min: 10 }),
@@ -119,18 +155,18 @@ router.post('/login', [
             return res.status(400).json({ success: false, error: "NOT ALLOWED , WRONG KEY DETECTED" });
         }
 
-
         const userLogin = await User.findOne({ email: req.body.email })
+        console.log(userLogin);
 
         if (!userLogin) {
-            return res.status(400).send("Invalid Credentialls for Userlogin")
+            return res.status(400).json({success:false,message:"Invalid Credentialls for Userlogin"})
         }
 
         const isMatch = await bcrypt.compare(req.body.pass, userLogin.pass);
 
         if (!isMatch) {
             invalidmailer(userLogin)
-            return res.status(400).send("Invalid password")
+            return res.status(400).json({success:false,message:"Invalid password"})
         }
 
         const token = jwt.sign({ _id: userLogin._id }, JWT_SECRET)
@@ -160,8 +196,8 @@ router.post('/user/getDetails', fetchUser, [
         if (!userfound) {
             return res.status(401).send({ error: "(code)Please authenticate using a valid token" });
         } else {
-            const userObj={email:userfound.email,name:userfound.name,_id:userfound._id}
-            res.status(200).json(userObj);
+            // const userObj={userfound}
+            res.status(200).json(userfound);
         }
 
     } catch (err) {
