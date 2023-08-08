@@ -51,7 +51,17 @@ const userSchema= new mongoose.Schema(
                     }
                 ]
             }
-        ]
+        ],
+        profilePic:{
+            name:{
+                type:String,
+                required:true
+            },
+            image:{
+                data:Buffer,
+                ContentType: String
+            }
+        }
     }
 )
 

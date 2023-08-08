@@ -16,9 +16,9 @@ app.use(express.json());
 
 const PORT=process.env.PORT || 5000;
 
-app.get("/", (req, res) => {
-    res.redirect('https://ayush-baliyan-19.github.io/Portfolio/')
-});
+// app.get("/", (req, res) => {
+//     res.redirect('https://ayush-baliyan-19.github.io/Portfolio/')
+// });
 app.use('/auth',require('./router/auth'))
 app.use(require('./router/forgot'))
 app.use(require('./router/mail'))

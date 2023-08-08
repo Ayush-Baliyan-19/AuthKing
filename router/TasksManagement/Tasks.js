@@ -59,6 +59,29 @@ router.get("/getUser",fetchUser, async (req,res)=>{
     }
 })
 
+
+router.get("/getTasksForDetails/:taskId",fetchUser,async (req,res)=>{
+    try{
+        const userId = req.userId;
+        console.log(req.body);
+        const userfound= await User.findById(userId);
+        if(!userfound)
+        {
+            return res.status(401).send({ error: "(code)Please authenticate using a valid token" });
+        }
+        else{
+            const taskfound = userfound.tasksArray.find(obj=>obj._id===req.params.taskId)
+            if(!taskfound)
+            {
+                return res.status(400).json({Success:false,message:"An unknown error occured"})
+            }
+            res.status(200).json({Success:true,Task:taskfound})
+        }
+    }catch(err){
+        res.status(400).json({Success:false,message:err})
+    }
+})
+
 router.post("/getTasksforDate",[
     body("Date","The Date you entered is not valid").isString()
 ],fetchUser,async (req,res)=>{
@@ -86,11 +109,12 @@ router.post("/getTasksforDate",[
         res.status(400).json({Success:false,message:err})
     }
 })
-router.post("/getTasksforMonth",[
-    body("Month","The Month you entered is not valid").isString()
+router.post("/getTasksforMonthandYear",[
+    body("Month","The Month you entered is not valid").isString().isLength({max:2}),
+    body("Year","The Year you entered is not valid").isString().isLength({max:2})
 ],fetchUser,async (req,res)=>{
     console.log(req.body)
-    const {Month} = req.body;
+    const {Month,Year} = req.body;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {    
         const success = false;
@@ -103,13 +127,13 @@ router.post("/getTasksforMonth",[
             return res.status(401).send({ error: "(code)Please authenticate using a valid token" });
         } else {
             // console.log(userfound.tasksArray[0].Date.split("/")[1])
-            const finding=userfound.tasksArray.find(obj=>String(obj.Date.split("/")[1])===Month)
+            const finding=userfound.tasksArray.filter(obj=>obj.Date.split("/")[1]===Month&&obj.Date.split("/")[2]===Year)
             console.log(finding)
             if(!finding)
             {
                 return res.status(400).json({Success:false,message:"An unknown error occured"})
             }
-            res.status(200).json({Success:true,TasksForDate:finding})
+            res.status(200).json({Success:true,TasksForMonth:finding})
         }
     }catch(err){
         res.status(400).json({Success:false,message:err})
