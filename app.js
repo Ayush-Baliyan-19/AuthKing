@@ -15,7 +15,7 @@ app.use(express.json());
 const PORT=process.env.PORT || 5000;
 
 app.get("/",(req,res)=>{
-    res.send("Hello");
+    res.send(`Hello ${process.env.NODEMAILER_USER}` );
 })
 
 app.use('/auth',require('./router/auth'))

@@ -19,12 +19,12 @@ router.post("/mail", async (req, res) => {
 
     const options = {
       from: "ayushbaliyan05@gmail.com",
-      to: email, 
-      subject: "Hello ✔", 
+      to: email,
+      subject: "Hello ✔",
       text: `${message}`,
     }
     const mailSent = await transport.sendMail(options);
-    res.status(200).send("Mail Sent Successfully")
+    res.status(200).json({ Success: true, message: "Mail sent successfully" })
   } catch (error) {
     res.status(400).send(error)
   }
@@ -45,7 +45,7 @@ const otpmailer = async (otp, email) => {
   const options = {
     from: "ayushbaliyan05@gmail.com",
     to: email,
-    subject: "OTP for Authking Registration", 
+    subject: "OTP for Authking Registration",
     html: `<p>Dear User,</p>
             <br><br>
             <p>We hope this email finds you well. We are writing to inform you that we have received a request to register with Authking using your email address.</p>
@@ -60,10 +60,9 @@ const otpmailer = async (otp, email) => {
             <p>The Authking Team</p>`,
   }
   const mailSent = await transport.sendMail(options);
-  if(mailSent.accepted)
-  {
+  if (mailSent.accepted) {
     return true
   }
   return false
 }
-module.exports = router,otpmailer;
+module.exports = router, otpmailer;
