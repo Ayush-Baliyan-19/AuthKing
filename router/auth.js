@@ -156,7 +156,6 @@ router.post('/login', [
         }
 
         const userLogin = await User.findOne({ email: req.body.email })
-        console.log(userLogin);
 
         if (!userLogin) {
             return res.status(400).json({success:false,message:"Invalid Credentialls for Userlogin"})

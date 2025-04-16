@@ -1,50 +1,50 @@
-const mongoose =require("mongoose")
-const bcryptjs=require("bcryptjs")
-const jwt=require("jsonwebtoken");
+const mongoose = require("mongoose")
+const bcryptjs = require("bcryptjs")
+const jwt = require("jsonwebtoken");
 
-const time= new Date()
-const userSchema= new mongoose.Schema(
+const time = new Date()
+const userSchema = new mongoose.Schema(
     {
-        name:{
-            type:String,
-            required:true
+        name: {
+            type: String,
+            required: true
         },
-        email:{
-            type:String,
-            required:true
+        email: {
+            type: String,
+            required: true
         },
-        pass:{
-            type:String,
-            required:true,
-            deefault:null
+        pass: {
+            type: String,
+            required: true,
+            deefault: null
         },
-        tasksArray:[
+        tasksArray: [
             {
-                Date:{
-                    type:String,
-                    default:time.getDate() + "/" + (time.getMonth()+1) + "/" + time.getFullYear()
+                Date: {
+                    type: String,
+                    default: time.getDate() + "/" + (time.getMonth() + 1) + "/" + time.getFullYear()
                 },
-                Tasks:[
+                Tasks: [
                     {
-                        Heading:{
-                            type:String
+                        Heading: {
+                            type: String
                         },
-                        Objective:{
-                            type:String
+                        Objective: {
+                            type: String
                         },
-                        TaskId:{
-                            type:String
+                        TaskId: {
+                            type: String
                         },
-                        time:{
-                            type:String
+                        time: {
+                            type: String
                         },
-                        tags:[
+                        tags: [
                             {
-                                tagName:{
-                                    type:String
+                                tagName: {
+                                    type: String
                                 },
-                                color:{
-                                    type:String
+                                color: {
+                                    type: String
                                 }
                             }
                         ]
@@ -52,15 +52,23 @@ const userSchema= new mongoose.Schema(
                 ]
             }
         ],
-        profilePic:{
-            name:{
-                type:String,
-                required:true
+        profilePic: {
+            name: {
+                type: String,
+                required: true
             },
-            image:{
-                data:Buffer,
+            image: {
+                data: Buffer,
                 ContentType: String
             }
+        },
+        passwordOtp: {
+            type: String,
+            default: null
+        },
+        otpExpiry: {
+            type: Date,
+            default: null
         }
     }
 )
